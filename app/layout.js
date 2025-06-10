@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
           <Link href={"/sampling"} className={"hover:underline"}>Sampling</Link>
           <Link href={"/info"} className={"hover:underline"}>Info</Link>
         </nav>
-        <header className={`w-full h-250px bg-[url(./banner.jpg)] p-10`}>
+        <header className={`w-full bg-[url(./banner.jpg)] p-10`}>
           <h1 className={`${quicksand.variable} w-fit mt-10 text-4xl italic`} style={{ textShadow: "var(--outline)" }}>Statistical Sampling</h1>
         </header>
         <main className={"h-100 p-2"}>

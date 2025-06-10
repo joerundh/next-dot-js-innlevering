@@ -32,3 +32,8 @@ body {
   width: 800px;
   margin: 5px auto;
 }
+
+h2 {
+  font-size: 24px;
+  text-align: center;
+}
