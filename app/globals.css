@@ -16,6 +16,12 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --outline-width: 2px;
+    --outline:
+      calc(-1 * var(--outline-width)) calc(-1 * var(--outline-width)) 0 black,
+      var(--outline-width) calc(-1 * var(--outline-width)) 0 black,
+      calc(-1 * var(--outline-width)) var(--outline-width) 0 black,
+      var(--outline-width) var(--outline-width) black;
   }
 }
 
@@ -23,4 +29,6 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  width: 800px;
+  margin: 5px auto;
 }
