@@ -35,5 +35,8 @@ body {
 
 h2 {
   font-size: 24px;
-  text-align: center;
+}
+
+p {
+  width: 100%;
 }

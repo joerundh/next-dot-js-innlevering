@@ -38,7 +38,7 @@ export default function RootLayout({ children }) {
         <header className={`w-full bg-[url(./banner.jpg)] p-10`}>
           <h1 className={`${quicksand.variable} w-fit mt-10 text-4xl italic`} style={{ textShadow: "var(--outline)" }}>Statistical Sampling</h1>
         </header>
-        <main className={"h-100 p-2"}>
+        <main className={"h-100 p-2 flex flex-col gap-5 items-center"}>
           {children}
         </main>
       </body>
