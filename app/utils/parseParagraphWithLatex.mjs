@@ -12,11 +12,13 @@ export default function parseParagraphWithLatex(...pieces) {
                         )
                     }
                     if (typeof piece === "object" && piece["type"] === "latex") {
-                        return <span key={index} className={"inline-block grid h-[1em] place-center"}>
+                        return piece["from"].map((str, i) => (
+                            <span key={i} className={"inline-block flex flex-column justify-start h-1em"}>
                             {
-                                latexToImage(piece["from"], true)
+                                latexToImage(str, true)
                             }
-                        </span>
+                            </span>
+                        ));
                     }
                 })
             }

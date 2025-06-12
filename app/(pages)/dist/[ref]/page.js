@@ -39,11 +39,14 @@ export default async function Page({ params }) {
             <h2>{obj["name"]}</h2>
             {
                 obj["description"].map((par, index) => (
-                    <p key={index}>
-                        {
-                            parseParagraphWithLatex(...par)
-                        }
-                    </p>
+                    <Fragment key={index}>
+                        { par["subheader"] ? <h3>{parseParagraphWithLatex(par["subheader"])}</h3> : <></> }
+                        <p key={index}>
+                            {
+                                parseParagraphWithLatex(...par["pieces"])
+                            }
+                        </p>
+                    </Fragment>
                 ))
             }
             <center>Basic properties:</center>

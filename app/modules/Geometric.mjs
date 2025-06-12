@@ -1,4 +1,23 @@
-export default function Geometric(p) {
+export default function Geometric(...args) {
+    let p;
+    if (args.length === 0) {
+        p = 0;
+    } else if (args.length >= 1) {
+        if (typeof args[0] === "number") {
+            if (args[0] >= 0) {
+                if (args[0] <= 1) {
+                    p = args[0];
+                } else {
+                    p = 1;
+                }
+            } else {
+                p = 0;
+            }
+        } else {
+            p = 0;
+        }
+    }
+
     const f = p === 0 ?
                     () => 0
                 : (
