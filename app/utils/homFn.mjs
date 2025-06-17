@@ -17,9 +17,8 @@ export default function homFn(fn, ...args) {
     if (args.length === 1) {
         if (args[0] instanceof Array) {
             return args[0].map(x => fn(x));
-        } else {
-            return args[0];
         }
+        return args[0];
     }
     return args.map(x => {
         if (x instanceof Array) {
