@@ -1,5 +1,3 @@
-import homFn from "@/app/utils/homFn.mjs";
-
 export default function Exponential(lambda) {
     this.getParams = () => {
         return {

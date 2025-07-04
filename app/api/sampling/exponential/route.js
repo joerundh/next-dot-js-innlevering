@@ -10,7 +10,7 @@ export async function GET(request) {
         return Response.json({ message: "Missing sample count." }, { status: 400 });
     }
 
-    const a = Number(params.get("lambda"));
+    const lambda = Number(params.get("lambda"));
     const count = Number(params.get("count"));
 
     const dist = new Exponential(lambda);
@@ -22,8 +22,8 @@ export async function GET(request) {
     return Response.json({
         dist: "Exponential distribution",
         params: dist.getParams(),
-        mean: 1/gamma,
-        variance: 1/Math.pow(gamma, 2),
+        mean: 1/lambda,
+        variance: 1/Math.pow(lambda, 2),
         samples: {
             count: count,
             data: data,
