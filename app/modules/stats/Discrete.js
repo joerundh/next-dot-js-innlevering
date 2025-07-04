@@ -1,4 +1,4 @@
-export default function DiscreteContinuous(a, b) {
+export default function Discrete(a, b) {
     this.getParams = () => {
         return {
             a: a,
