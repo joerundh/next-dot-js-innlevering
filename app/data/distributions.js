@@ -68,6 +68,75 @@ export default [
         ],
         ref: "uniform"
     },
+    {   // Discrete uniform distribution
+        name: "Discrete uniform distribution",
+        description: [
+            {
+                pieces: [
+                   ""
+                ]
+            }
+        ],
+        info: [
+            {
+                key: "Notation",
+                value: {
+                    type: "latex",
+                    from: "N \\sim \\mathrm{U}\\{a, b\\}"
+                }
+            },
+            {
+                key: "Parameters",
+                value: {
+                    type: "latex",
+                    from: "a, b \\in \\mathbb{Z}, \\quad a \\le b"
+                }
+            },
+            {
+                key: "Variables",
+                value: {
+                    type: "latex",
+                    from: "N"
+                }
+            },
+            {
+                key: "Support",
+                value: {
+                    type: "latex",
+                    from: "\\{ a, ..., b \\}"
+                }
+            },
+            {
+                key: "PDF",
+                value: {
+                    type: "latex",
+                    from: "P(N = n) = \\frac{1}{b - a + 1}, \\quad a \\le n \\le b"
+                }
+            },
+            {
+                key: "CDF",
+                value: {
+                    type: "latex",
+                    from: "P(N \\le n) = \\frac{n - a + 1}{b - a + 1}"
+                }
+            },
+            {
+                key: "Mean",
+                value: {
+                    type: "latex",
+                    from: "\\frac{a + b}{2}"
+                }
+            },
+            {
+                key: "Variance",
+                value: {
+                    type: "latex",
+                    from: "\\frac{1}{12} \\big( (b - a + 1)^2 - 1 \\big)"
+                }
+            },
+        ],
+        ref: "discrete"
+    },
     {   // Geometric distribution
         name: "Geometric distribution",
         description: [

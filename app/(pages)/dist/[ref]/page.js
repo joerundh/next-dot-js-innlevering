@@ -36,7 +36,7 @@ export default async function Page({ params }) {
 
     return (
         <>
-            <h2>{obj["name"]}</h2>
+            <h2 className={"text-center text-lg font-bold"}>{obj["name"]}</h2>
             {
                 obj["description"].map((par, index) => (
                     <Fragment key={index}>
