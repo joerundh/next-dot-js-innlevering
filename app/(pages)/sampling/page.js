@@ -1,7 +1,41 @@
 "use client";
 
+import Binomial from "@/app/modules/stats/Binomial";
+import Cauchy from "@/app/modules/stats/Cauchy";
+import Continuous from "@/app/modules/stats/Continuous";
+import Discrete from "@/app/modules/stats/Discrete";
+import Geometric from "@/app/modules/stats/Geometric";
+import Normal from "@/app/modules/stats/Normal";
+import Poisson from "@/app/modules/stats/Poisson";
+import binData from "@/app/utils/binData";
 import latexToImage from "@/app/utils/latexToImage.mjs";
 import { useEffect, useState } from "react";
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Chart } from "react-chartjs-2";
+import Exponential from "@/app/modules/stats/Exponential";
+
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 /*import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { Plot, Heading, LineSeries, Axis, Legend } from 'react-plot';
@@ -9,7 +43,7 @@ import { hydrate } from "@tanstack/react-query";
 */
 
 
-function ParameterInputs({ params }) {
+function ParameterInputs({ params, setter }) {
     const setParam = e => {
         
     }
@@ -33,13 +67,16 @@ function ParameterInputs({ params }) {
 export default function Page() {
     const [ dist, setDist ] = useState("");
     const [ params, setParams ] = useState({});
-    const [ count, setCount ] = useState(100);
+    const [ count, setCount ] = useState(1000);
     
     const [ isLoading, setIsLoading ] = useState(false);
     const [ error, setError ] = useState(false);
-    const [ samples, setSamples ] = useState({});
+    const [ data, setData ] = useState({});
 
     useEffect(() => {
+        setData({});
+        setError(false);
+        setIsLoading(false);
         if (dist === "continuous") {
             setParams({
                 a: {
@@ -119,7 +156,6 @@ export default function Page() {
         } else {
             setParams({});
         }
-        setCount(100);
     }, [ dist ])
 
     const submit = async e => {
@@ -138,7 +174,7 @@ export default function Page() {
         searchParams.append("count", count);
 
         // Reset switches and erase earlier fetched data
-        setSamples({});
+        setData({});
         setError(false);
         setIsLoading(true);
 
@@ -150,7 +186,7 @@ export default function Page() {
             return;
         }
         const obj = await res.json();
-        setSamples({ a: "a" })
+        setData(obj)
 
         setIsLoading(false);
     }
@@ -159,11 +195,11 @@ export default function Page() {
         e.preventDefault();
 
         if (isLoading) {
-            return false;
+            return;
         }
 
         setDist("");
-        setSamples({});
+        setData({});
         setError(false);
         setCount(100);
     }
@@ -175,8 +211,126 @@ export default function Page() {
         if (error) {
             return <p>An error occurred.</p>
         }
-        if (Object.entries(samples).length) {
-            return <p>Yeahhh</p>
+        if (Object.entries(data).length) {
+            const [ min, max ] = [ Math.min(...data.samples.data), Math.max(...data.samples.data) ];
+
+            const bins = {};
+            const pdf = {};
+
+            if (dist === "continuous") {
+                const { a, b } = data.params;
+                const obj = new Continuous(a, b);
+
+                const { binCenters, binCounts } = binData(data.samples.data);
+                bins.centers = binCenters;
+                bins.counts = binCounts;
+
+                pdf.X = [ ...new Array(500 + 1) ].map((x, index) => min + index*(max - min)/500);
+                pdf.Y = obj.pdf(...pdf.X);  
+            } else if (dist === "discrete") {
+                bins.centers = [ ...new Array(max - min + 1) ].map((x, index) => min + index);
+                const binCounts = new Array(max - min + 1).fill(0);
+                data.samples.data.forEach(i => binCounts[i]++);
+                bins.counts = binCounts;
+                
+                const { a, b } = data.params;
+                pdf.X = bins.centers;
+                pdf.Y = new Discrete(a, b).pdf(...pdf.X);
+            } else if (dist === "geometric") {
+                bins.centers = [ ...new Array(max - min + 1) ].map((x, index) => min + index);
+                const binCounts = new Array(max - min + 1).fill(0);
+                data.samples.data.forEach(i => binCounts[i]++);
+                bins.counts = binCounts;
+                
+                const { p } = data.params;
+                pdf.X = bins.centers;
+                pdf.Y = new Geometric(p).pdf(...pdf.X);
+            } else if (dist === "binomial") {
+                bins.centers = [ ...new Array(max - min + 1) ].map((x, index) => min + index);
+                const binCounts = new Array(max - min + 1).fill(0);
+                data.samples.data.forEach(i => binCounts[i]++);
+                bins.counts = binCounts;
+                
+                const { n, p } = data.params;
+                pdf.X = bins.centers;
+                pdf.Y = new Binomial(n, p).pdf(...pdf.X)
+            } else if (dist === "poisson") {
+                bins.centers = [ ...new Array(max - min + 1) ].map((x, index) => min + index);
+                const binCounts = new Array(max - min + 1).fill(0);
+                data.samples.data.forEach(i => binCounts[i]++);
+                bins.counts = binCounts;
+                
+                const { n, p } = data.params;
+                pdf.X = bins.centers;
+                pdf.Y = new Binomial(n, p).pdf(...pdf.X)
+            } else if (dist === "exponential") {
+
+                
+                pdf.X = [ ...new Array(500 + 1) ].map((x, index) => min + index*(max - min)/500);
+                const { lambda } = data.params;
+                pdf.Y = new Exponential(lambda).pdf(...pdf.X);
+            } else if (dist === "normal") {
+                const { mu, sigma } = data.params;
+                const obj = new Normal(mu, sigma);
+
+                pdf.X = [ ...new Array(500 + 1) ].map((x, index) => min + index*(max - min)/500);
+                pdf.Y = obj.pdf(...pdf.X);
+            } else if (dist === "cauchy") {
+                const { x0, gamma } = data.params;
+                const obj = new Cauchy(x0, gamma);
+
+                pdf.X = [ ...new Array(500 + 1) ].map((x, index) => min + index*(max - min)/500);
+                pdf.Y = obj.pdf(...pdf.X);
+            } else {
+                return <></>
+            }
+
+            const plotData = {
+                labels: bins.centers,
+                innerWidth: 550,
+                outerWidth: 550,
+                datasets: [
+                    {
+                        type: "bar",
+                        label: "Samples",
+                        data: bins.counts.map(x => x/data.count),
+                        backgroundColor: "rgba(54, 162, 235, 0.5)",
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderWidth: 1
+                    },
+                    {
+                        type: "line",
+                        label: "Distribution",
+                        data: pdf.X.map((x, index) => {
+                            return {
+                                x: x,
+                                y: pdf.Y[index]
+                            };
+                        }),
+                        borderColor: "white",
+                        borderWidth: 2,
+                        fill: false,
+                        pointRadius: 2,
+                        parsing: false
+                    }
+                ]
+            }
+            
+            const options = {
+                responsive: false,
+                scales: {
+                    x: {
+                        type: "linear",
+                        position: "bottom"
+                    }
+                },
+                devicePizelRatio: 2,
+                maintainAspectRatio: false
+            }
+
+            return <div width={500} height={300}>
+                <Chart type="bar" data={plotData} options={options} />
+            </div>;
         }
         return <></>;
     }
@@ -185,6 +339,7 @@ export default function Page() {
         <>
             <h2 className={"text-center text-lg font-bold"}>Statistical sampling tool</h2>
             <p>In the below, you may choose a probability distribution, enter values of your choosing for the relevant parameters, and how many samples you wish to draw. Then the API is called using the parameter values you have entered, and a set of values drawn according to the chosen probability distribution is returned. The resulting histogram, and the graph of the probability distribution for comparison, will appear underneath.</p>
+            <p>Please note: the correspondence gets better with increased sample size.</p>
             
             <form onSubmit={submit}>
                 <div className={"w-full flex flex-col gap-4 justify-center items-center"}>
@@ -209,7 +364,7 @@ export default function Page() {
                     </div>
                     {
                         dist ? <div className={"flex flex-col gap-5 items-center"}>
-                            <label className={"w-full flex flex-row justify-center items-center gap-1"}>
+                            <label className={"w-full flex flex-ro-w justify-center items-center gap-1"}>
                                 <span>Number of samples:</span>
                                 <input type="text" value={count} onChange={e => setCount(isNaN(e.target.value) ? count : Number(e.target.value))} className={"w-[100px] border-1 border-white text-right p-1"} />
                             </label>

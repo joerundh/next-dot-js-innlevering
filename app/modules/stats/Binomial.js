@@ -1,6 +1,34 @@
 import homFn from "@/app/utils/homFn.mjs";
 
+function binom(n, k) {
+    // Function to compute binomial coefficients without division error
+    if (k < 0 || k > n) {
+        return 0;
+    }
+    if (k === 0 || k === n) {
+        return 1;
+    }
+    const r = Math.min(k, n - k);
+
+    const R = [ ...new Array(r - 1) ].map((x, index) => r - index);
+    const N = [ ...new Array(r) ].map((x, index) => n - index);
+
+    for (let l of R) {
+        for (let i = 0; i < r; i++) {
+            if (N[i] % l) {
+                continue;
+            }
+            N[i] = N[i] / l;
+            break;
+        }
+    }
+    return N.reduce((acc, cur) => acc*cur, 1);
+}
+
 export default function Binomial(n, p) {
+    this.mean = n*p;;
+    this.variance = n*p*(1 - p);
+
     this.getParams = () => {
         return {
             n: n,
@@ -8,8 +36,9 @@ export default function Binomial(n, p) {
         };
     };
 
-    this.mean = n*p;;
-    this.variance = n*p*(1 - p);
+    // Probability distribution
+    const f = k => binom(n, k)*Math.pow(p, k)*Math.pow(1 - p, n - k);
+    this.pdf = (...args) => homFn(f, ...args);
 
     // Sampling functions
 

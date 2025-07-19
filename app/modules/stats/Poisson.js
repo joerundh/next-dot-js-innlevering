@@ -16,22 +16,25 @@ function invFac(n) {
 }
 
 export default function Poisson(lambda) {
+    this.mean = lambda;
+    this.variance = lambda;
+
     this.getParams = () => {
         return {
             lambda: lambda
         }
     }
 
-    this.mean = lambda;
-    this.variance = lambda;
-
+    // Probability distributioin
     const f = function(n) {
         if (n === 0) {
             return Math.exp(-lambda);
         }
         return f(n - 1)*lambda/n;
     }
+    this.pdf = (...args) => homFn(f, ...args);
 
+    // Sampling
     const draw = () => {
         const q = Math.random();
 
@@ -45,6 +48,5 @@ export default function Poisson(lambda) {
             n++;
         }
     }
-
     this.samples = N => [ ...new Array(N) ].map(() => draw());
 }

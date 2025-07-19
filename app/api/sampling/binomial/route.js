@@ -10,9 +10,23 @@ export async function GET(request) {
         return Response.json({ message: "Missing sample count." }, { status: 400 });
     }
 
+    // Number of trials
     const n = Number(params.get("n"));
+    if (isNaN(n) || n < 0 || Math.floor(n) !== n) {
+        return Response.json({ message: "Invalid parameter." }, { status: 400 });
+    }
+
+    // Probability of success
     const p = Number(params.get("p"));
+    if (isNaN(p) || p < 0 || p > 1) {
+        return Response.json({ message: "Invalid parameter." }, { status: 400 });
+    }
+
+    // Number of samples
     const count = Number(params.get("count"));
+    if (isNaN(count) || n < 1 || Math.floor(n) !== n) {
+        return Response.json({ message: "Missing sample count." }, { status: 400 });
+    }
 
     const dist = new Binomial(n, p);
     const data = dist.samples(count);
