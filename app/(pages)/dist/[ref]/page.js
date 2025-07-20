@@ -1,6 +1,7 @@
 import distributions from "@/app/data/distributions"
 import latexToImage from "@/app/utils/latexToImage";
 import parseParagraphWithLatex from "@/app/utils/parseParagraphWithLatex.mjs";
+import Link from "next/link";
 import { Fragment } from "react";
 
 export default async function Page({ params }) {
@@ -11,7 +12,7 @@ export default async function Page({ params }) {
     if (!obj) {
         return (
             <>
-                <h2>Oops!</h2>
+                <h2></h2>
                 <p>No info found on a distribution with the provided reference.</p>
             </>
         )
@@ -36,6 +37,66 @@ export default async function Page({ params }) {
 
     return (
         <>
+            <div>
+                <ul className={"flex flex-row justify-between items-center px-2 text-xs"}>
+                    <li>
+                        {
+                            ref === "continuous" ? 
+                                <b>Continuous Uniform</b>
+                            :
+                                <Link href={"/dist/continuous"} className={"hover:underline"}>Continuous Uniform</Link>
+                        }
+                    </li>
+                    <li>
+                        {
+                            ref === "discrete" ? 
+                                <b>Discrete Uniform</b>
+                            :
+                                <Link href={"/dist/discrete"} className={"hover:underline"}>Discrete Uniform</Link>
+                        }
+                    </li>
+                    <li>
+                        {
+                            ref === "geometric" ? 
+                                <b>Geometric</b>
+                            :
+                                <Link href={"/dist/geometric"} className={"hover:underline"}>Geometric</Link>
+                        }
+                    </li>
+                    <li>
+                        {
+                            ref === "binomial" ? 
+                                <b>Binomial</b>
+                            :
+                                <Link href={"/dist/binomial"} className={"hover:underline"}>Binomial</Link>
+                        }
+                    </li>
+                    <li>
+                        {
+                            ref === "poisson" ? 
+                                <b>Poisson</b>
+                            :
+                                <Link href={"/dist/poisson"} className={"hover:underline"}>Poisson</Link>
+                        }
+                    </li>
+                    <li>
+                        {
+                            ref === "exponential" ? 
+                                <b>Binomial</b>
+                            :
+                                <Link href={"/dist/exponential"} className={"hover:underline"}>Exponential</Link>
+                        }
+                    </li>
+                    <li>
+                        {
+                            ref === "normal" ? 
+                                <b>Normal</b>
+                            :
+                                <Link href={"/dist/normal"} className={"hover:underline"}>Normal</Link>
+                        }
+                    </li>
+                </ul>
+            </div>
             <h2 className={"text-center text-lg font-bold"}>{obj["name"]}</h2>
             {
                 obj["description"].map((par, index) => (

@@ -334,7 +334,7 @@ export default function Page() {
         <>
             <h2 className={"text-center text-lg font-bold"}>Statistical sampling tool</h2>
             <p>In the below, you may choose a probability distribution, enter values of your choosing for the relevant parameters, and how many samples you wish to draw. There are eight distributions available, some continuous and some discrete. Then the API is called using the parameter values you have entered, and a set of values drawn according to the chosen probability distribution is returned. The resulting histogram, and the graph of the probability distribution for comparison, will appear underneath.</p>
-            <p>Note: the correspondence gets better with increased sample size. Then again, more data means more handling time. So decide how exact a match you want, and how long you're willing to wait for it, and find your own balance</p>
+            <p>Note: the correspondence gets better with increased sample size. Then again, more data means more handling time. So decide how exact a match you want, and how long you're willing to wait for it, and find your own balance.</p>
             
             <form onSubmit={submit}>
                 <div className={"w-full flex flex-col gap-4 justify-center items-center"}>

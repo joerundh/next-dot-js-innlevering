@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
-import QueryProvider from "./components/providers/QueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,16 +30,14 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col gap-1`}>
         <nav className={"w-full flex flex-row justify-end gap-10 text-sm"}>
           <Link href={"/"} className={"hover:underline"}>Home</Link>
-          <Link href={"/sampling"} className={"hover:underline"}>Sampling</Link>
           <Link href={"/info"} className={"hover:underline"}>Info</Link>
+          <Link href={"/sampling"} className={"hover:underline"}>Try it</Link>
         </nav>
         <header className={`w-full bg-[url(./banner.jpg)] p-10`}>
           <h1 className={`${quicksand.variable} w-fit mt-10 text-4xl italic`} style={{ textShadow: "var(--outline)" }}>Statistical Sampling</h1>
         </header>
         <main className={"h-100 p-2 flex flex-col gap-5 items-stretch"}>
-          <QueryProvider>
-            {children}
-          </QueryProvider>
+          {children}
         </main>
       </body>
     </html>

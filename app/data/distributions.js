@@ -4,7 +4,42 @@ export default [
         description: [
             {
                 pieces: [
-                   "A continuous uniform distribution describes experiments where a stochastic variable can take any value within a finite (either open or closed) interval between a minimum and a maximum value on the real number line. "
+                   "A stochastic variable ",
+                   {
+                        type: "latex",
+                        from: [ "X" ]
+                   },
+                   "follows a continuous uniform fistribution if it is continuous (i.e. it can take any value between two values ",
+                   {
+                        type: "latex",
+                        from: [ "a" ]
+                   },
+                   " and ",
+                   {
+                        type: "latex",
+                        from: [ "b" ]
+                   },
+                   "), and if the probability that is takes a value inside any subinterval ",
+                   {
+                        type: "latex",
+                        from: [ "(c, d) \\in (a, b)" ]
+                   },
+                   " equals ",
+                   {
+                        type: "latex",
+                        from: [ "\\frac{d - c}{b - a}" ]
+                   },
+                   ". Thus the probability fistribution function is \"just a number\", namely ",
+                   {
+                        type: "latex",
+                        from: [ "f(x) = \\frac{1}{b - a}" ]
+                   },
+                   " everywhere (for all ",
+                   {
+                        type: "latex",
+                        from: [ "x \\in (a, b)" ]
+                   },
+                   ")."
                 ]
             }
         ],
@@ -66,15 +101,13 @@ export default [
                 }
             },
         ],
-        ref: "uniform"
+        ref: "continuous"
     },
     {   // Discrete uniform distribution
         name: "Discrete uniform distribution",
         description: [
             {
-                pieces: [
-                   ""
-                ]
+                
             }
         ],
         info: [
@@ -145,17 +178,17 @@ export default [
                     "A geometric distribution describes an experiment being repeated several times, with the same probability ",
                     {
                         type: "latex",
-                        from: "p"
+                        from: [ "p" ]
                     },
                     " for success each time. The stochastic variable being the number ",
                     {
                         type: "latex",
-                        from: "N"
+                        from: [ "N" ]
                     },
                     " of trials before, and including, the first success, the probability distribution function gives the probability for each possible value ",
                     {
                         type: "latex",
-                        from: "1, 2, 3, \\dots"
+                        from: [ "1, 2, 3, \\dots" ]
                     },
                     "."
                 ]
