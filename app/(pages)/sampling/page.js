@@ -1,12 +1,13 @@
 "use client";
 
-import Binomial from "@/app/modules/stats/Binomial";
-import Cauchy from "@/app/modules/stats/Cauchy";
 import Continuous from "@/app/modules/stats/Continuous";
 import Discrete from "@/app/modules/stats/Discrete";
 import Geometric from "@/app/modules/stats/Geometric";
-import Normal from "@/app/modules/stats/Normal";
+import Binomial from "@/app/modules/stats/Binomial";
 import Poisson from "@/app/modules/stats/Poisson";
+import Exponential from "@/app/modules/stats/Exponential";
+import Normal from "@/app/modules/stats/Normal";
+
 import binData from "@/app/utils/binData";
 import latexToImage from "@/app/utils/latexToImage.mjs";
 import { useEffect, useState } from "react";
@@ -23,7 +24,6 @@ import {
   Legend,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import Exponential from "@/app/modules/stats/Exponential";
 
 // Register Chart.js components
 ChartJS.register(
@@ -36,11 +36,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-/*import { useSearchParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import { Plot, Heading, LineSeries, Axis, Legend } from 'react-plot';
-import { hydrate } from "@tanstack/react-query";
-*/
 
 
 function ParameterInputs({ params, setter }) {
@@ -146,17 +141,6 @@ export default function Page() {
                 },
                 sigma: {
                     label: "\\sigma",
-                    value: 1
-                }
-            })
-        } else if (dist === "cauchy") {
-            setParams({
-                x0: {
-                    label: "x_0",
-                    value: 0
-                },
-                gamma: {
-                    label: "\\gamma",
                     value: 1
                 }
             })
@@ -284,14 +268,6 @@ export default function Page() {
                 const { mu, sigma } = data.params;
                 pdf.X = [ ...new Array(500 + 1) ].map((x, index) => min + index*(max - min)/500);
                 pdf.Y = new Normal(mu, sigma).pdf(...pdf.X);
-            } else if (data.dist.ref === "cauchy") {
-                const { binCenters, binCounts } = binData(data.samples.data);
-                bins.centers = binCenters;
-                bins.counts = binCounts;
-
-                const { x0, gamma } = data.params;
-                pdf.X = [ ...new Array(500 + 1) ].map((x, index) => min + index*(max - min)/500);
-                pdf.Y = new Cauchy(x0, gamma).pdf(...pdf.X);
             } else {
                 return <></>
             }
@@ -375,7 +351,6 @@ export default function Page() {
                             <option value={"poisson"} className={"color-[#e8ee8e8] bg-black"}>Poisson distribution</option>
                             <option value={"exponential"} className={"color-[#e8ee8e8] bg-black"}>Exponential distribution</option>
                             <option value={"normal"} className={"color-[#e8ee8e8} bg-black"}>Normal distribution</option>
-                            <option value={"cauchy"} className={"color-[#e8ee8e8] bg-black"}>Cauchy distribution</option>
                         </select>
                     </label>
                     <div className={"w-full flex flex-row justify-center gap-5"}>
