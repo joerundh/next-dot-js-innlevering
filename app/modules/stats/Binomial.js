@@ -13,16 +13,17 @@ function binom(n, k) {
     const R = [ ...new Array(r - 1) ].map((x, index) => r - index);
     const N = [ ...new Array(r) ].map((x, index) => n - index);
 
-    for (let l of R) {
-        for (let i = 0; i < r; i++) {
-            if (N[i] % l) {
+    for (let i = 0; i < r - 1; i++) {
+        for (let ii = 0; ii < r; ii++) {
+            if (N[ii] % R[i]) {
                 continue;
             }
-            N[i] = N[i] / l;
+            N[ii] = N[ii] / R[i];
+            R[i] = 1;
             break;
         }
     }
-    return N.reduce((acc, cur) => acc*cur, 1);
+    return N.reduce((acc, cur) => acc*cur, 1)/R.reduce((acc, cur) => acc*cur, 1);
 }
 
 export default function Binomial(n, p) {

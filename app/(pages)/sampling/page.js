@@ -45,7 +45,15 @@ import { hydrate } from "@tanstack/react-query";
 
 function ParameterInputs({ params, setter }) {
     const setParam = e => {
-        
+        if (isNaN(e.target.value)) {
+            return;
+        }
+        const newValue = {};
+        newValue[e.target.name] = {
+            label: params[e.target.name].label,
+            value: Number(e.target.value)
+        };
+        setter({ ...params, ...newValue })
     }
 
     return (
@@ -110,7 +118,7 @@ export default function Page() {
             setParams({
                 n: {
                     label: "n",
-                    value: "10"
+                    value: 10
                 },
                 p: {
                     label: "p",
@@ -206,7 +214,7 @@ export default function Page() {
 
     const results = () => {
         if (isLoading) {
-            return <p>Loading...</p>
+            return <p className={"w-full text-center"}>Loading...</p>
         }
         if (error) {
             return <p>An error occurred.</p>
@@ -230,7 +238,7 @@ export default function Page() {
             } else if (dist === "discrete") {
                 bins.centers = [ ...new Array(max - min + 1) ].map((x, index) => min + index);
                 const binCounts = new Array(max - min + 1).fill(0);
-                data.samples.data.forEach(i => binCounts[i]++);
+                data.samples.data.forEach(i => binCounts[i - min]++);
                 bins.counts = binCounts;
                 
                 const { a, b } = data.params;
@@ -239,7 +247,7 @@ export default function Page() {
             } else if (dist === "geometric") {
                 bins.centers = [ ...new Array(max - min + 1) ].map((x, index) => min + index);
                 const binCounts = new Array(max - min + 1).fill(0);
-                data.samples.data.forEach(i => binCounts[i]++);
+                data.samples.data.forEach(i => binCounts[i - min]++);
                 bins.counts = binCounts;
                 
                 const { p } = data.params;
@@ -248,7 +256,7 @@ export default function Page() {
             } else if (dist === "binomial") {
                 bins.centers = [ ...new Array(max - min + 1) ].map((x, index) => min + index);
                 const binCounts = new Array(max - min + 1).fill(0);
-                data.samples.data.forEach(i => binCounts[i]++);
+                data.samples.data.forEach(i => binCounts[i - min]++);
                 bins.counts = binCounts;
                 
                 const { n, p } = data.params;
@@ -257,14 +265,14 @@ export default function Page() {
             } else if (dist === "poisson") {
                 bins.centers = [ ...new Array(max - min + 1) ].map((x, index) => min + index);
                 const binCounts = new Array(max - min + 1).fill(0);
-                data.samples.data.forEach(i => binCounts[i]++);
+                data.samples.data.forEach(i => binCounts[i - min]++);
                 bins.counts = binCounts;
                 
                 const { n, p } = data.params;
                 pdf.X = bins.centers;
                 pdf.Y = new Binomial(n, p).pdf(...pdf.X)
             } else if (dist === "exponential") {
-
+                
                 
                 pdf.X = [ ...new Array(500 + 1) ].map((x, index) => min + index*(max - min)/500);
                 const { lambda } = data.params;
@@ -293,10 +301,12 @@ export default function Page() {
                     {
                         type: "bar",
                         label: "Samples",
-                        data: bins.counts.map(x => x/data.count),
+                        data: bins.counts.map(x => x/data.samples.count),
                         backgroundColor: "rgba(54, 162, 235, 0.5)",
                         borderColor: "rgba(54, 162, 235, 1)",
-                        borderWidth: 1
+                        borderWidth: 1,
+                        barPercentage: 1.0,
+                        categoryPercentage: 1.0
                     },
                     {
                         type: "line",
@@ -317,7 +327,7 @@ export default function Page() {
             }
             
             const options = {
-                responsive: false,
+                responsive: true,
                 scales: {
                     x: {
                         type: "linear",
@@ -328,7 +338,7 @@ export default function Page() {
                 maintainAspectRatio: false
             }
 
-            return <div width={500} height={300}>
+            return <div className={"mt-5 w-full h-[300px]"}>
                 <Chart type="bar" data={plotData} options={options} />
             </div>;
         }
@@ -339,7 +349,7 @@ export default function Page() {
         <>
             <h2 className={"text-center text-lg font-bold"}>Statistical sampling tool</h2>
             <p>In the below, you may choose a probability distribution, enter values of your choosing for the relevant parameters, and how many samples you wish to draw. Then the API is called using the parameter values you have entered, and a set of values drawn according to the chosen probability distribution is returned. The resulting histogram, and the graph of the probability distribution for comparison, will appear underneath.</p>
-            <p>Please note: the correspondence gets better with increased sample size.</p>
+            <p>Please note: the correspondence gets better with increased sample size. Then again, more data means more handling time.</p>
             
             <form onSubmit={submit}>
                 <div className={"w-full flex flex-col gap-4 justify-center items-center"}>
