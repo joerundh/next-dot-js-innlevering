@@ -35,7 +35,10 @@ export async function GET(request) {
     const variance = count === 1 ? 0 : data.map(x => Math.pow(x - mean, 2)).reduce((acc, cur) => acc + cur, 0)/(count - 1);
     
     return Response.json({
-        dist: "Binomial distribution",
+        dist: {
+            name: "Binomial distribution",
+            ref: "binomial"
+        },
         params: dist.getParams(),
         mean: n*p,
         variance: n*p*(1 - p),

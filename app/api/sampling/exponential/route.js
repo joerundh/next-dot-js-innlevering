@@ -20,7 +20,10 @@ export async function GET(request) {
     const variance = count === 1 ? 0 : data.map(x => Math.pow(x - mean, 2)).reduce((acc, cur) => acc + cur, 0)/(count - 1);
     
     return Response.json({
-        dist: "Exponential distribution",
+        dist: {
+            name: "Exponential distribution",
+            ref: "exponential"
+        },
         params: dist.getParams(),
         mean: 1/lambda,
         variance: 1/Math.pow(lambda, 2),

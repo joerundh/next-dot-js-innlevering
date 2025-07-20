@@ -21,7 +21,10 @@ export async function GET(request) {
     const variance = count === 1 ? 0 : data.map(x => Math.pow(x - mean, 2)).reduce((acc, cur) => acc + cur, 0)/(count - 1);
     
     return Response.json({
-        dist: "Continuous uniform distribution",
+        dist: {
+            name: "Continuous uniform distribution",
+            ref: "continuous"
+        },
         params: dist.getParams(),
         mean: (a + b)/2,
         variance: Math.pow(b - a, 2)/12,

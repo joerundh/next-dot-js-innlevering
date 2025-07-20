@@ -82,7 +82,6 @@ export default function Page() {
     const [ data, setData ] = useState({});
 
     useEffect(() => {
-        setData({});
         setError(false);
         setIsLoading(false);
         if (dist === "continuous") {
@@ -157,7 +156,7 @@ export default function Page() {
                     value: 0
                 },
                 gamma: {
-                    label: "\\gammma",
+                    label: "\\gamma",
                     value: 1
                 }
             })
@@ -225,17 +224,15 @@ export default function Page() {
             const bins = {};
             const pdf = {};
 
-            if (dist === "continuous") {
-                const { a, b } = data.params;
-                const obj = new Continuous(a, b);
-
+            if (data.dist.ref === "continuous") {
                 const { binCenters, binCounts } = binData(data.samples.data);
                 bins.centers = binCenters;
                 bins.counts = binCounts;
 
+                const { a, b } = data.params;
                 pdf.X = [ ...new Array(500 + 1) ].map((x, index) => min + index*(max - min)/500);
-                pdf.Y = obj.pdf(...pdf.X);  
-            } else if (dist === "discrete") {
+                pdf.Y = new Continuous(a, b).pdf(...pdf.X);
+            } else if (data.dist.ref === "discrete") {
                 bins.centers = [ ...new Array(max - min + 1) ].map((x, index) => min + index);
                 const binCounts = new Array(max - min + 1).fill(0);
                 data.samples.data.forEach(i => binCounts[i - min]++);
@@ -244,7 +241,7 @@ export default function Page() {
                 const { a, b } = data.params;
                 pdf.X = bins.centers;
                 pdf.Y = new Discrete(a, b).pdf(...pdf.X);
-            } else if (dist === "geometric") {
+            } else if (data.dist.ref === "geometric") {
                 bins.centers = [ ...new Array(max - min + 1) ].map((x, index) => min + index);
                 const binCounts = new Array(max - min + 1).fill(0);
                 data.samples.data.forEach(i => binCounts[i - min]++);
@@ -253,7 +250,7 @@ export default function Page() {
                 const { p } = data.params;
                 pdf.X = bins.centers;
                 pdf.Y = new Geometric(p).pdf(...pdf.X);
-            } else if (dist === "binomial") {
+            } else if (data.dist.ref === "binomial") {
                 bins.centers = [ ...new Array(max - min + 1) ].map((x, index) => min + index);
                 const binCounts = new Array(max - min + 1).fill(0);
                 data.samples.data.forEach(i => binCounts[i - min]++);
@@ -262,33 +259,39 @@ export default function Page() {
                 const { n, p } = data.params;
                 pdf.X = bins.centers;
                 pdf.Y = new Binomial(n, p).pdf(...pdf.X)
-            } else if (dist === "poisson") {
+            } else if (data.dist.ref === "poisson") {
                 bins.centers = [ ...new Array(max - min + 1) ].map((x, index) => min + index);
                 const binCounts = new Array(max - min + 1).fill(0);
                 data.samples.data.forEach(i => binCounts[i - min]++);
                 bins.counts = binCounts;
                 
-                const { n, p } = data.params;
-                pdf.X = bins.centers;
-                pdf.Y = new Binomial(n, p).pdf(...pdf.X)
-            } else if (dist === "exponential") {
-                
-                
-                pdf.X = [ ...new Array(500 + 1) ].map((x, index) => min + index*(max - min)/500);
                 const { lambda } = data.params;
+                pdf.X = bins.centers;
+                pdf.Y = new Poisson(lambda).pdf(...pdf.X)
+            } else if (data.dist.ref === "exponential") {
+                const { binCenters, binCounts } = binData(data.samples.data);
+                bins.centers = binCenters;
+                bins.counts = binCounts;
+
+                const { lambda } = data.params;
+                pdf.X = [ ...new Array(500 + 1) ].map((x, index) => min + index*(max - min)/500);
                 pdf.Y = new Exponential(lambda).pdf(...pdf.X);
-            } else if (dist === "normal") {
+            } else if (data.dist.ref === "normal") {
+                const { binCenters, binCounts } = binData(data.samples.data);
+                bins.centers = binCenters;
+                bins.counts = binCounts;
+
                 const { mu, sigma } = data.params;
-                const obj = new Normal(mu, sigma);
-
                 pdf.X = [ ...new Array(500 + 1) ].map((x, index) => min + index*(max - min)/500);
-                pdf.Y = obj.pdf(...pdf.X);
-            } else if (dist === "cauchy") {
+                pdf.Y = new Normal(mu, sigma).pdf(...pdf.X);
+            } else if (data.dist.ref === "cauchy") {
+                const { binCenters, binCounts } = binData(data.samples.data);
+                bins.centers = binCenters;
+                bins.counts = binCounts;
+
                 const { x0, gamma } = data.params;
-                const obj = new Cauchy(x0, gamma);
-
                 pdf.X = [ ...new Array(500 + 1) ].map((x, index) => min + index*(max - min)/500);
-                pdf.Y = obj.pdf(...pdf.X);
+                pdf.Y = new Cauchy(x0, gamma).pdf(...pdf.X);
             } else {
                 return <></>
             }
@@ -310,7 +313,7 @@ export default function Page() {
                     },
                     {
                         type: "line",
-                        label: "Distribution",
+                        label: "PDF",
                         data: pdf.X.map((x, index) => {
                             return {
                                 x: x,
@@ -320,7 +323,7 @@ export default function Page() {
                         borderColor: "white",
                         borderWidth: 2,
                         fill: false,
-                        pointRadius: 2,
+                        pointRadius: 0,
                         parsing: false
                     }
                 ]
@@ -328,6 +331,12 @@ export default function Page() {
             
             const options = {
                 responsive: true,
+                plugins: {
+                    legend: {
+                        position: "right",
+                        align: "center"
+                    }
+                },
                 scales: {
                     x: {
                         type: "linear",
@@ -348,8 +357,8 @@ export default function Page() {
     return (
         <>
             <h2 className={"text-center text-lg font-bold"}>Statistical sampling tool</h2>
-            <p>In the below, you may choose a probability distribution, enter values of your choosing for the relevant parameters, and how many samples you wish to draw. Then the API is called using the parameter values you have entered, and a set of values drawn according to the chosen probability distribution is returned. The resulting histogram, and the graph of the probability distribution for comparison, will appear underneath.</p>
-            <p>Please note: the correspondence gets better with increased sample size. Then again, more data means more handling time.</p>
+            <p>In the below, you may choose a probability distribution, enter values of your choosing for the relevant parameters, and how many samples you wish to draw. There are eight distributions available, some continuous and some discrete. Then the API is called using the parameter values you have entered, and a set of values drawn according to the chosen probability distribution is returned. The resulting histogram, and the graph of the probability distribution for comparison, will appear underneath.</p>
+            <p>Note: the correspondence gets better with increased sample size. Then again, more data means more handling time. So decide how exact a match you want, and how long you're willing to wait for it, and find your own balance</p>
             
             <form onSubmit={submit}>
                 <div className={"w-full flex flex-col gap-4 justify-center items-center"}>
@@ -378,13 +387,10 @@ export default function Page() {
                                 <span>Number of samples:</span>
                                 <input type="text" value={count} onChange={e => setCount(isNaN(e.target.value) ? count : Number(e.target.value))} className={"w-[100px] border-1 border-white text-right p-1"} />
                             </label>
-                            {
-                                isLoading ? <></> : 
-                                    <div className={"flex flex-row gap-5"}>
-                                        <input type="submit" className={"border-1 border-white p-1"} value="Sample" />
-                                        <button className={"border-1 border-white p-1"} onClick={clear}>Clear form</button>
-                                    </div>
-                            }
+                            <div className={"flex flex-row gap-5"}>
+                                <input type="submit" className={"w-[200px] border-1 border-white p-1"} value="Sample" />
+                                <button className={"w-[200px] border-1 border-white p-1"} onClick={clear}>Clear form</button>
+                            </div>
                         </div> : <></>
                     }
                     {

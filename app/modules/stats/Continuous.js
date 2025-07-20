@@ -1,3 +1,5 @@
+import homFn from "@/app/utils/homFn.mjs";
+
 export default function Continuous(a, b) {
     const L = b - a;
     this.mean = (a + b)/2;

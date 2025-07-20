@@ -20,7 +20,10 @@ export async function GET(request) {
     const variance = count === 1 ? 0 : data.map(x => Math.pow(x - mean, 2)).reduce((acc, cur) => acc + cur, 0)/(count - 1);
     
     return Response.json({
-        dist: "Geometric distribution",
+        dist: {
+            name: "Geometric distribution",
+            ref: "geometric"
+        },
         params: dist.getParams(),
         mean: 1/p,
         variance: (1 - p)/Math.pow(p, 2),
