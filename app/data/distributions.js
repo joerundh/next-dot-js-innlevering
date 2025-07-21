@@ -217,7 +217,7 @@ export default [
                         type: "latex",
                         from: [ "N" ]
                     },
-                    " follows a gemoetric distribution."
+                    " follows a geometric distribution."
                 ]
             },
             {

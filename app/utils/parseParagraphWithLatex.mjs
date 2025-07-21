@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import latexToImage from "./latexToImage.mjs";
 
 export default function parseParagraphWithLatex(...pieces) {
@@ -13,7 +12,7 @@ export default function parseParagraphWithLatex(...pieces) {
                     }
                     if (typeof piece === "object" && piece["type"] === "latex") {
                         return piece["from"].map((str, i) => (
-                            <span key={i} className={"inline-block flex flex-column justify-start h-1em"}>
+                            <span key={i} className={"inline-block translate-y-[3px]"}>
                             {
                                 latexToImage(str, true)
                             }

@@ -1,6 +1,7 @@
 import distributions from "@/app/data/distributions"
 import latexToImage from "@/app/utils/latexToImage";
 import parseParagraphWithLatex from "@/app/utils/parseParagraphWithLatex.mjs";
+import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 
@@ -24,7 +25,7 @@ export default async function Page({ params }) {
                 if (value["from"] instanceof Array) {
                     return value["from"].map((str, index) => (
                         <Fragment key={index}>
-                            { index > 0 ? <span className={"mr-2"}>,</span> : <></>} {latexToImage(str)}
+                            { index > 0 ? <span className={"mr-2"}>,</span> : <></>} {latexToImage(str, false)}
                         </Fragment>
                     ));
                 }
@@ -101,8 +102,8 @@ export default async function Page({ params }) {
             {
                 obj["description"].map((par, index) => (
                     <Fragment key={index}>
-                        { par["subheader"] ? <h3>{parseParagraphWithLatex(par["subheader"])}</h3> : <></> }
-                        <p key={index}>
+                        { par["subheader"] ? <h3 className={"font-bold"}>{parseParagraphWithLatex(par["subheader"])}</h3> : <></> }
+                        <p key={index} className={"inline-block"}>
                             {
                                 parseParagraphWithLatex(...par["pieces"])
                             }
@@ -111,13 +112,13 @@ export default async function Page({ params }) {
                 ))
             }
             <center>Basic properties:</center>
-            <div className={"grid grid-cols-[auto_auto] gap-x-2"}>
+            <div className={"mx-auto w-fit flex flex-col justify-top gap-x-2"}>
                 {
                     obj["info"].map(({ key, value }, index) => (
-                        <Fragment key={index}>
-                            <div className="p-1 flex flex-col justify-center">{key}:</div>
+                        <div className={"flex flex-row "} key={index}>
+                            <div className="w-[150px] p-1 flex flex-col justify-center">{key}:</div>
                             <div className="p-1 flex flex-row justify-start items-center">{tableValue(value)}</div>
-                        </Fragment>
+                        </div>
                     )) 
                 }
             </div>
