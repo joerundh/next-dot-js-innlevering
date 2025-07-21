@@ -9,7 +9,7 @@ const info = [
                         type: "latex",
                         from: [ "X" ]
                    },
-                   "follows a continuous uniform fistribution if it is continuous (i.e. it can take any value between two values ",
+                   " follows a continuous uniform fistribution if it is continuous (i.e. it can take any value between two values ",
                    {
                         type: "latex",
                         from: [ "a" ]
