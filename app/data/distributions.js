@@ -107,7 +107,34 @@ export default [
         name: "Discrete uniform distribution",
         description: [
             {
-                
+                pieces: [
+                    "Assume that a stochastic variable ",
+                    {
+                        type: "latex",
+                        from: [ "A" ]
+                    },
+                    " can take any one out of a discrete set of values. If the probability that ",
+                    {
+                        type: "latex",
+                        from: [ "A" ]
+                    },
+                    " takes any value is the same for all values, then ",
+                    {
+                        type: "latex",
+                        from: [ "A" ]
+                    },
+                    " is said to follow a discrete uniform distribution. A classic example would be that of shaking a bag of marbles, each with a distinct colour, and then picking out one of them from the bag. Then the probability of picking any one colour is the same for all the colours, equal to ",
+                    {
+                        type: "latex",
+                        from: [ "\\frac{1}{N}" ]
+                    },
+                    ", where ",
+                    {
+                        type: "latex",
+                        from: [ "N" ]
+                    },
+                    " is the number of distinct colours to pick from."
+                ]
             }
         ],
         info: [
@@ -175,22 +202,47 @@ export default [
         description: [
             {
                 pieces: [
-                    "A geometric distribution describes an experiment being repeated several times, with the same probability ",
+                    "Consider an experiment which can be performed over and over again, and which has a probability ",
                     {
                         type: "latex",
                         from: [ "p" ]
                     },
-                    " for success each time. The stochastic variable being the number ",
+                    " of success at any attempt, regardless of how many experiments has been performed before and what their outcomes were. The, if one defined the number of experiments ",
                     {
                         type: "latex",
                         from: [ "N" ]
                     },
-                    " of trials before, and including, the first success, the probability distribution function gives the probability for each possible value ",
+                    " that must be performed to in the end have a successful attempt, ",
                     {
                         type: "latex",
-                        from: [ "1, 2, 3, \\dots" ]
+                        from: [ "N" ]
                     },
-                    "."
+                    " follows a gemoetric distribution."
+                ]
+            },
+            {
+                pieces: [
+                    "Since all trials are independent of each other, and the probability of failure is ",
+                    {
+                        type: "latex",
+                        from: [ "1 - p" ]
+                    },
+                    ", the probability that ",
+                    {
+                        type: "latex",
+                        from: [ "N = n" ]
+                    },
+                    " experiments must be performed to end on a success, is ",
+                    {
+                        type: "latex",
+                        from: [ "P(N = n) = (1 - p)^{n - 1} p" ]
+                    },
+                    " (for ",
+                    {
+                        type: "latex",
+                        from: [ "n = 1, 2, 3, \\dots" ]
+                    },
+                    ")."
                 ]
             }
         ],
@@ -266,17 +318,92 @@ export default [
         description: [
             {
                 pieces: [
-                    "The binomial distribution describes an experiment being repeated a number ",
+                    "Assume that we have an experiment which can be performed with a success rate ",
+                    {
+                        type: "latex",
+                        from: [ "p" ]
+                    },
+                    ", when all experiments are performed independently of each other. Assume the experiements is performed ",
                     {
                         type: "latex",
                         from: [ "n" ]
                     },
-                    " times, and then gives the probability that a number ",
+                    " times. Define then the stochastic variable ",
                     {
                         type: "latex",
                         from: [ "K" ]
                     },
-                    " of those experiments results in a success."
+                    " which represents how many of the ",
+                    {
+                        type: "latex",
+                        from: [ "n" ]
+                    },
+                    " experiments are successful. This variable then follows a binomial distribution."
+                ]
+            },
+            {
+                pieces: [
+                    "The probability ",
+                    {
+                        type: "from",
+                        from: [ "P(K = k)" ]
+                    },
+                    " that ",
+                    {
+                        type: "latex",
+                        from: [ "k" ]
+                    },
+                    " experiments are successful, independently is their order (!), equals ",
+                    {
+                        type: "latex",
+                        from: [ "\\binom{n}{k} p^k (1 - p)^{n - k}" ]
+                    },
+                    ", which accounts for ",
+                    {
+                        type: "latex",
+                        from: [ "k" ]
+                    },
+                    " successes, ",
+                    {
+                        type: "latex",
+                        from: [ "n - k" ]
+                    },
+                    " failures, and where ",
+                    {
+                        type: "latex",
+                        from: [ "\\binom{n}{k}" ]
+                    },
+                    " are binomial coefficients, which count the number of distinct ways in which the successes and failures can be ordered."
+                ]
+            },
+            {
+                pieces: [
+                    "As an example, for two experiements (",
+                    {
+                        type: "latex",
+                        from: [ "n = 2" ]
+                    },
+                    "), there is one way to order two successes and two failures, thus ",
+                    {
+                        type: "latex",
+                        from: [ "\\binom{2}{0} = \\binom{2}{2} = 1" ]
+                    },
+                    "while for one success and one failure, there are two ways two order them, thus ",
+                    {
+                        type: "latex",
+                        from: [ "\\binom{2}{1} = 2" ]
+                    },
+                    ". As such, one has ",
+                    {
+                        type: "latex",
+                        from: [ "P(K = 0) = (1 - p)^2", "P(K = 2) = p^2" ]
+                    }, 
+                    " and ",
+                    {
+                        type: "latex",
+                        from: [ "P(K = 1) = 2p(1 - p)" ]
+                    },
+                    "."
                 ]
             }
         ],
@@ -352,7 +479,82 @@ export default [
         description: [
             {
                 pieces: [
-                    ""
+                    "Assume that we count the number of times that a random event occurs over some time interval. Denote this count by ",
+                    {
+                        type: "latex",
+                        from: [ "N" ]
+                    },
+                    ", and say that we know the average number ",
+                    {
+                        type: "latex",
+                        from: [ "\\lambda" ]
+                    },
+                    " of times that the event occurs. Then ",
+                    {
+                        type: "latex",
+                        from: [ "N" ]
+                    },
+                    " is a stochastic variable following a Poisson distribution, with probability distribution function ",
+                    {
+                        type: "latex",
+                        from: [ "P(N = n) = \\frac{\\lambda^n}{n!} e^{-\\lambda}" ]
+                    },
+                    " that the event occurs ",
+                    {
+                        type: "latex",
+                        from: [ "n" ]
+                    },
+                    " times, where ",
+                    {
+                        type: "latex",
+                        from: [ "n!" ]
+                    },
+                    " denotes the factorial function ",
+                    {
+                        type: "latex",
+                        from: [ "1 \\cdot 2 \\cdots (n - 1) \\cdot n" ]
+                    },
+                    ", and ",
+                    {
+                        type: "latex",
+                        from: [ "e^{-\\lambda}" ]
+                    },
+                    " is the exponential function."
+                ]
+            },
+            {
+                pieces: [
+                    "The same distribution describes anything that is counted over some interval, area, volume. For example the number of visible stars in a given section of the night sky, the number of quartz grains in a scoop of beach sand, the number of sodium atoms in a glass of sea water, and so on. The difference between these cases lies the parameter ",
+                    {
+                        type: "latex",
+                        from: [ "\\lambda" ]
+                    },
+                    ", which equals both the mean of the distribution and the variance. On the last note, the standard deviation thus equals the square root of ",
+                    {
+                        type: "latex",
+                        from: [ "\\lambda" ]
+                    },
+                    ". From this, if the the expected number ",
+                    {
+                        type: "latex",
+                        from: [ "\\langle N \\rangle = \\lambda" ]
+                    },
+                    " (the mean) has a value to some order ",
+                    {
+                        type: "latex",
+                        from: [ "10^{M}" ]
+                    },
+                    ", the standard deviation is of the order ",
+                    {
+                        type: "latex",
+                        from: [ "10^{M/2}" ]
+                    },
+                    ", which for higher values of ",
+                    {
+                        type: "latex",
+                        from: [ "M" ]
+                    },
+                    " becomes smaller and smaller compared to the mean. Thus, for the examples of sodium atoms or quartz grains, all samples (scoops, glasses) can not at all be expected to vary much in number compared to the numbers themselves. Hence the apparent homogeneity of beach sand, seawater, et.al.."
                 ]
             }
         ],
@@ -428,7 +630,42 @@ export default [
         description: [
             {
                 pieces: [
-                    ""
+                    "Assume that an event occurs at irregular, random intervals. Then the time ",
+                    {
+                        type: "latex",
+                        from: [ "T" ]
+                    },
+                    " between two consecutive events follows an exponential distribution. Assuming that the event happens at a frequency ",
+                    {
+                        type: "latex",
+                        from: [ "\\lambda" ]
+                    },
+                    ", the probability that a second event occurs at the latest a time ",
+                    {
+                        type: "latex",
+                        from: [ "t" ]
+                    },
+                    " after a first one has occurred, is ",
+                    {
+                        type: "latex",
+                        from: [ "P(T \\le t) = 1 - e^{-\\lambda t}" ]
+                    },
+                    ", which approaches 1 with increasing ",
+                    {
+                        type: "latex",
+                        from: [ "t" ]
+                    },
+                    ". The smaller the value of the frequency ",
+                    {
+                        type: "latex",
+                        from: [ "\\lambda" ]
+                    },
+                    ", the slower it approaches one, i.e. the longer time may pass between consecutive events."
+                ]
+            },
+            {
+                pieces: [
+                    "The typical example cited is that of radioactive decay. When an atomic nucleus in a piece of radioactive matter decays, a particle is emitted which can then be registered by, for example, a Geiger counter. The frequency with which this occurs depends on the type of nuclues, that is, what element it is, as well as what isotope. Since this frequency of events characterizes the element, one may thus talk about the expected time it takes for, say, half of the nuclei in a piece of a given element to have decayed. Hence the term 'half-life'."
                 ]
             }
         ],
@@ -497,7 +734,22 @@ export default [
         description: [
             {
                 pieces: [
-                    ""
+                    "One of the most well-studied and employed distributions, the normal distribution is important, among other things, for its applicability, in part due to the central limit theorem, in describing a wide variety of phenomena, as well as for its relatively straight-forward mathematical form and properties."
+                ]
+            },
+            {
+                pieces: [
+                    "It is characterized by two parameters ",
+                    {
+                        type: "latex",
+                        from: [ "\\mu" ]
+                    },
+                    " and ",
+                    {
+                        type: "latex",
+                        from: [ "\\sigma" ]
+                    },
+                    ", which are equal to the mean and the standard deviation, respectively. In addition, given these values, the normal distribution can be shown to be the continuous distribution which maximizes the differential entropy. Thus in cases when little more information is available than these values, the normal distribution is generally a fairly good candidate."
                 ]
             }
         ],
