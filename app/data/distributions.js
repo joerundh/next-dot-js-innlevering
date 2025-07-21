@@ -29,7 +29,7 @@ const info = [
                         type: "latex",
                         from: [ "\\frac{d - c}{b - a}" ]
                    },
-                   ". Thus the probability fistribution function is &quot;just a number&quot;, namely ",
+                   ". Thus the probability fistribution function is a constant, namely ",
                    {
                         type: "latex",
                         from: [ "f(x) = \\frac{1}{b - a}" ]
@@ -50,6 +50,10 @@ const info = [
                     type: "latex",
                     from: "X \\sim \\mathrm{U}(a, b)"
                 }
+            },
+            {
+                key: "Type",
+                value: "Continuous"
             },
             {
                 key: "Parameters",
@@ -144,6 +148,10 @@ const info = [
                     type: "latex",
                     from: "N \\sim \\mathrm{U}\\{a, b\\}"
                 }
+            },
+            {
+                key: "Type",
+                value: "Discrete"
             },
             {
                 key: "Parameters",
@@ -253,6 +261,10 @@ const info = [
                     type: "latex",
                     from: [ "N \\sim \\mathrm{G}(p)" ]
                 }
+            },
+            {
+                key: "Type",
+                value: "Discrete"
             },
             {
                 key: "Parameters",
@@ -421,6 +433,10 @@ const info = [
                 }
             },
             {
+                key: "Type",
+                value: "Discrete"
+            },
+            {
                 key: "Parameters:",
                 value: {
                     type: "latex",
@@ -572,6 +588,10 @@ const info = [
                 }
             },
             {
+                key: "Type",
+                value: "Discrete"
+            },
+            {
                 key: "Parameters",
                 value: {
                     type: "latex",
@@ -683,6 +703,10 @@ const info = [
                 }
             },
             {
+                key: "Type",
+                value: "Continuous"
+            },
+            {
                 key: "Parameters",
                 value: {
                     type: "latex",
@@ -765,6 +789,10 @@ const info = [
                     type: "latex",
                     from: [ "X \\sim \\mathrm{N}(\\mu, \\sigma^2)" ]
                 }
+            },
+            {
+                key: "Type",
+                value: "Continuous"
             },
             {
                 key: "Parameters",
