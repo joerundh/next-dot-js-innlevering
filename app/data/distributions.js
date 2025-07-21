@@ -1,4 +1,4 @@
-export default [
+const info = [
     {   // Continuous uniform distribution
         name: "Continuous uniform distribution",
         description: [
@@ -29,7 +29,7 @@ export default [
                         type: "latex",
                         from: [ "\\frac{d - c}{b - a}" ]
                    },
-                   ". Thus the probability fistribution function is \"just a number\", namely ",
+                   ". Thus the probability fistribution function is &quot;just a number&quot;, namely ",
                    {
                         type: "latex",
                         from: [ "f(x) = \\frac{1}{b - a}" ]
@@ -814,3 +814,5 @@ export default [
         ref: "normal"
     }
 ];
+
+export default info;
