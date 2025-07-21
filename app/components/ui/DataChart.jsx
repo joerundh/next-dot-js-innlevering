@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,7 +11,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Chart, Bar } from "react-chartjs-2";
+import { Chart } from "react-chartjs-2";
 
 // Register Chart.js components
 ChartJS.register(
@@ -25,6 +27,6 @@ ChartJS.register(
 
 export default function DataChart({ data, options }) {
   return (
-    <Bar data={data} options={options} />
+    <Chart type={"bar"} data={data} options={options} />
   );
 }
