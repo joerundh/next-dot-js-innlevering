@@ -15,7 +15,6 @@ import { Chart, Bar } from "react-chartjs-2";
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  Bar,
   BarElement,
   PointElement,
   LineElement,
@@ -26,6 +25,6 @@ ChartJS.register(
 
 export default function DataChart({ data, options }) {
   return (
-    <Chart type="bar" data={data} options={options} />
+    <Chart type={"bar"} data={data} options={options} />
   );
 }
