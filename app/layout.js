@@ -30,8 +30,8 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col gap-1`}>
         <nav className={"w-full flex flex-row justify-end gap-10 text-sm"}>
           <Link href={"/"} className={"hover:underline"}>Home</Link>
-          <Link href={"/info"} className={"hover:underline"}>Info</Link>
-          <Link href={"/sampling"} className={"hover:underline"}>Try it</Link>
+          <Link href={"/dist"} className={"hover:underline"}>PDFs</Link>
+          <Link href={"/sampling"} className={"hover:underline"}>Sampling tool</Link>
         </nav>
         <header className={`w-full bg-[url(./banner.jpg)] p-10`}>
           <h1 className={`${quicksand.variable} w-fit mt-10 text-4xl italic`} style={{ textShadow: "var(--outline)" }}>Statistical Sampling</h1>

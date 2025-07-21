@@ -12,8 +12,8 @@ export default async function Page({ params }) {
     if (!obj) {
         return (
             <>
-                <h2></h2>
-                <p>No info found on a distribution with the provided reference.</p>
+                <h2>Not found</h2>
+                <p>No information found about any distribution with the provided reference.</p>
             </>
         )
     }
