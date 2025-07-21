@@ -9,63 +9,11 @@ import Exponential from "@/app/modules/stats/Exponential";
 import Normal from "@/app/modules/stats/Normal";
 
 import binData from "@/app/utils/binData";
-import latexToImage from "@/app/utils/latexToImage.mjs";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import ParameterInput from "@/app/components/ui/ParameterInput";
 
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Chart, Bar } from "react-chartjs-2";
-
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-
-function ParameterInputs({ params, setter }) {
-    const setParam = e => {
-        if (isNaN(e.target.value)) {
-            return;
-        }
-        const newValue = {};
-        newValue[e.target.name] = {
-            label: params[e.target.name].label,
-            value: Number(e.target.value)
-        };
-        setter({ ...params, ...newValue })
-    }
-
-    return (
-        <div className={"w-full flex flex-row justify-center gap-5"}>
-            {
-                Object.entries(params).map(([ name, obj ], index) => (
-                    <label className={"flex flex-row items-center gap-2"} key={index}>
-                        {
-                            latexToImage(`${obj.label}:`)
-                        }
-                        <input type="text" value={obj.value} name={name} onChange={setParam} className={"w-[100px] border-1 border-white text-right p-1"} />
-                    </label>
-                ))
-            }
-        </div>
-    )
-}
+const DataChart = dynamic(() => import("@/app/components/ui/DataChart"), { ssr: false })
 
 export default function Page() {
     const [ dist, setDist ] = useState("");
@@ -324,7 +272,7 @@ export default function Page() {
             }
 
             return <div className={"mt-5 w-full h-[300px]"}>
-                <Chart type="bar" data={plotData} options={options} />
+                <DataChart data={plotData} options={options} />
             </div>;
         }
         return <></>;
@@ -354,17 +302,17 @@ export default function Page() {
                         </select>
                     </label>
                     <div className={"w-full flex flex-row justify-center gap-5"}>
-                        <ParameterInputs params={params} setter={setParams} />
+                        <ParameterInput params={params} setter={setParams} />
                     </div>
                     {
                         dist ? <div className={"flex flex-col gap-5 items-center"}>
                             <label className={"w-full flex flex-ro-w justify-center items-center gap-1"}>
                                 <span>Number of samples:</span>
-                                <input type="text" value={count} onChange={e => setCount(isNaN(e.target.value) ? count : Number(e.target.value))} className={"w-[100px] border-1 border-white text-right p-1"} />
+                                <input type="text" value={count} onChange={e => setCount(isNaN(e.target.value) ? count : Number(e.target.value))} className={"w-[100px] border-1 border-white text-right p-[1px]"} />
                             </label>
                             <div className={"flex flex-row gap-5"}>
-                                <input type="submit" className={"w-[200px] border-1 border-white p-1"} value="Sample" />
-                                <button className={"w-[200px] border-1 border-white p-1"} onClick={clear}>Clear form</button>
+                                <input type="submit" className={"w-[200px] border-1 border-white p-[1px]"} value="Sample" />
+                                <button className={"w-[200px] border-1 border-white p-[1px]"} onClick={clear}>Clear form</button>
                             </div>
                         </div> : <></>
                     }
