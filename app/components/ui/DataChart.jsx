@@ -27,6 +27,6 @@ ChartJS.register(
 
 export default function DataChart({ data, options }) {
   return (
-    <Chart type={"bar"} data={data} options={options} />
+    <Chart type="bar" data={data} options={options} />
   );
 }
