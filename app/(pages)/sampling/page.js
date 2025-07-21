@@ -10,7 +10,6 @@ import Normal from "@/app/modules/stats/Normal";
 
 import binData from "@/app/utils/binData";
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import ParameterInput from "@/app/components/ui/ParameterInput";
 
 const DataChart = dynamic(() => import("@/app/components/ui/DataChart"), { ssr: false })
