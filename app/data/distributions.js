@@ -396,9 +396,14 @@ const info = [
                     ". As such, one has ",
                     {
                         type: "latex",
-                        from: [ "P(K = 0) = (1 - p)^2", "P(K = 2) = p^2" ]
+                        from: [ "P(K = 0) = (1 - p)^2" ]
                     }, 
                     " and ",
+                    {
+                        type: "latex",
+                        from: [ "P(K = 2) = p^2" ]
+                    },
+                    ", while ",
                     {
                         type: "latex",
                         from: [ "P(K = 1) = 2p(1 - p)" ]
