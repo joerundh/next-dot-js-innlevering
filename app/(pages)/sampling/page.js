@@ -12,6 +12,7 @@ import binData from "@/app/utils/binData";
 import { useEffect, useState } from "react";
 import ParameterInput from "@/app/components/ui/ParameterInput";
 
+import dynamic from "next/dynamic";
 const DataChart = dynamic(() => import("@/app/components/ui/DataChart"), { ssr: false })
 
 export default function Page() {
