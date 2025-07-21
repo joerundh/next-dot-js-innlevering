@@ -8,7 +8,7 @@ import {
   BarController,
   PointElement,
   LineElement,
-  LineController
+  LineController,
   Title,
   Tooltip,
   Legend,
