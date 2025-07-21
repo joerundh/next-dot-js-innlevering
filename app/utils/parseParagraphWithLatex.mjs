@@ -12,7 +12,7 @@ export default function parseParagraphWithLatex(...pieces) {
                     }
                     if (typeof piece === "object" && piece["type"] === "latex") {
                         return piece["from"].map((str, i) => (
-                            <span key={i} className={"inline-block h-fit w-fit translate-y-[5%]"}>
+                            <span key={i} className={"inline-block h-fit w-fit translate-y-[20%]"}>
                             {
                                 latexToImage(str, true)
                             }
